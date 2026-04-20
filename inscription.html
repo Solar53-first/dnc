@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNC - Inscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 85%;
+            max-width: 400px;
+            margin-top: 60px;
+        }
+
+        .logo-title {
+            text-align: center;
+            font-size: 55px;
+            font-weight: bold;
+            color: #005bb5; /* Bleu du modèle */
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888888;
+            font-size: 15px;
+            margin-top: 5px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .standard-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #005bb5;
+            border-radius: 8px;
+            font-size: 15px;
+            color: #333;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .standard-input::placeholder {
+            color: #b0b0b0;
+        }
+
+        /* Groupe spécifique pour le numéro de téléphone */
+        .phone-group {
+            display: flex;
+            border: 2px solid #005bb5;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .phone-prefix {
+            background-color: #f4f4f4;
+            padding: 15px;
+            font-weight: bold;
+            color: #333;
+            border-right: 1px solid #005bb5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .phone-input {
+            flex-grow: 1;
+            border: none;
+            padding: 15px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .phone-input::placeholder {
+            color: #b0b0b0;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: #005bb5;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 30px; /* Bordures très arrondies comme sur l'image */
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .btn-submit:active {
+            background-color: #004488;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: #888888;
+        }
+
+        .footer a {
+            color: #005bb5;
+            font-weight: bold;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="logo-title">DNC</h1>
+        <p class="subtitle">Créez votre compte</p>
+
+        <div class="input-group">
+            <input type="text" id="username" class="standard-input" placeholder="Nom d'utilisateur">
+        </div>
+
+        <div class="input-group phone-group">
+            <div class="phone-prefix">+243</div>
+            <input type="tel" id="phone" class="phone-input" placeholder="Numéro (9 chiffres)" maxlength="9">
+        </div>
+
+        <div class="input-group">
+            <input type="password" id="pin" class="standard-input" placeholder="Mot de passe (6 chiffres)" inputmode="numeric" maxlength="6">
+        </div>
+
+        <div class="input-group">
+            <input type="password" id="pin_confirm" class="standard-input" placeholder="Confirmer le mot de passe" inputmode="numeric" maxlength="6">
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="referral_code" class="standard-input" value="874123" readonly>
+        </div>
+
+        <button class="btn-submit" onclick="registerUser()">S'inscrire</button>
+
+        <div class="footer">
+            Déjà un compte ? <a href="index.html">Se connecter</a>
+        </div>
+    </div>
+
+    <script>
+        function registerUser() {
+            const user = document.getElementById('username').value;
+            const phone = document.getElementById('phone').value;
+            const pin = document.getElementById('pin').value;
+            const pinConfirm = document.getElementById('pin_confirm').value;
+            const refCode = document.getElementById('referral_code').value;
+
+            // Vérifications de sécurité
+            if(!user || !phone || !pin) {
+                alert("Veuillez remplir tous les champs obligatoires.");
+                return;
+            }
+
+            // Le mot de passe doit comporter exactement 6 chiffres
+            const isSixDigits = /^\d{6}$/.test(pin);
+            if(!isSixDigits) {
+                alert("Erreur : Le mot de passe doit contenir exactement 6 chiffres.");
+                return;
+            }
+
+            if(pin !== pinConfirm) {
+                alert("Erreur : Les mots de passe ne correspondent pas.");
+                return;
+            }
+
+            // Enregistrement de l'utilisateur dans la mémoire du navigateur
+            const userData = {
+                username: user,
+                phone: "+243" + phone,
+                pin: pin,
+                referredBy: refCode,
+                balance: 0
+            };
+
+            localStorage.setItem('dnc_user', JSON.stringify(userData));
+
+            alert("Inscription réussie ! Vous pouvez maintenant vous connecter.");
+            window.location.href = "index.html"; // Redirection vers la page de connexion
+        }
+    </script>
+
+</body>
+</html>

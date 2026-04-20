@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNC | Profil</title>
+    <style>
+        :root {
+            --primary-blue: #005bb5;
+            --bg-light: #f4f7f6;
+            --white: #ffffff;
+            --danger: #e11d48;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            background-color: var(--bg-light);
+            color: #333;
+            padding-bottom: 80px;
+        }
+
+        /* En-tête Profil */
+        .profile-header {
+            background-color: var(--primary-blue);
+            padding: 40px 20px;
+            text-align: center;
+            color: white;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+        }
+
+        .avatar-circle {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            border: 2px solid white;
+        }
+
+        .user-phone { font-size: 18px; font-weight: bold; margin: 0; }
+        .user-id { font-size: 12px; opacity: 0.8; margin-top: 5px; }
+
+        /* Statistiques */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 20px;
+            margin-top: -20px;
+        }
+
+        .stat-box {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .stat-box .val { font-size: 18px; font-weight: bold; color: var(--primary-blue); display: block; }
+        .stat-box .lbl { font-size: 11px; color: #888; text-transform: uppercase; margin-top: 5px; display: block; }
+
+        /* Liste des options */
+        .settings-list {
+            background: var(--white);
+            margin: 0 20px 20px 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .settings-item {
+            display: flex;
+            align-items: center;
+            padding: 18px;
+            text-decoration: none;
+            color: #333;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 15px;
+        }
+
+        .settings-item:last-child { border-bottom: none; }
+        .settings-item i { margin-right: 15px; font-style: normal; font-size: 18px; }
+        .settings-item .arrow { margin-left: auto; color: #ccc; }
+
+        /* Bouton Quitter */
+        .logout-container { padding: 0 20px; }
+        .btn-logout {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: #fff1f2;
+            color: var(--danger);
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 15px;
+            border: 1px solid #fee2e2;
+        }
+
+        /* Nav Bas */
+        .bottom-nav {
+            position: fixed; bottom: 0; width: 100%; background: white;
+            display: flex; justify-content: space-around; padding: 15px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-item { text-align: center; text-decoration: none; color: #888; font-size: 11px; }
+        .nav-item.active { color: var(--primary-blue); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="profile-header">
+        <div class="avatar-circle">👤</div>
+        <p class="user-phone" id="display-phone">Utilisateur</p>
+        <p class="user-id">Membre Officiel DNC</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-box">
+            <span class="val" id="display-balance">0 FC</span>
+            <span class="lbl">Solde Actuel</span>
+        </div>
+        <div class="stat-box">
+            <span class="val" id="display-profit">0.00 FC</span>
+            <span class="lbl">Profit Total</span>
+        </div>
+    </div>
+
+    <div class="settings-list">
+        <a href="recharge-history.html" class="settings-item">
+            <i>💳</i> Historique de Recharge <span class="arrow">></span>
+        </a>
+        <a href="withdraw-history.html" class="settings-item">
+            <i>📥</i> Historique de Retrait <span class="arrow">></span>
+        </a>
+        <a href="equipe.html" class="settings-item">
+            <i>👥</i> Mon Équipe <span class="arrow">></span>
+        </a>
+        <a href="support.html" class="settings-item">
+            <i>🎧</i> Service Client <span class="arrow">></span>
+        </a>
+        <a href="about.html" class="settings-item">
+            <i>ℹ️</i> À propos de DNC <span class="arrow">></span>
+        </a>
+    </div>
+
+    <div class="logout-container">
+        <a href="#" class="btn-logout" onclick="logout()">SE DÉCONNECTER</a>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="accueil.html" class="nav-item">🏠 MAISON</a>
+        <a href="produit.html" class="nav-item">🛍️ PRODUIT</a>
+        <a href="equipe.html" class="nav-item">👥 ÉQUIPE</a>
+        <a href="compte.html" class="nav-item active">👤 LE MIEN</a>
+    </nav>
+
+    <script>
+        window.onload = function() {
+            const user = JSON.parse(localStorage.getItem('dnc_user'));
+            if (user) {
+                document.getElementById('display-phone').innerText = user.phone;
+                document.getElementById('display-balance').innerText = user.balance.toLocaleString() + " FC";
+            }
+        };
+
+        function logout() {
+            if(confirm("Voulez-vous vous déconnecter ?")) {
+                localStorage.removeItem('dnc_user');
+                window.location.href = "inscription.html";
+            }
+        }
+    </script>
+
+</body>
+</html>

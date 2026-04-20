@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNC | Boutique VIP</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #f5f8ff; padding-bottom: 100px; }
+
+        /* En-tête Fixe - Couleur DNC */
+        .header-top {
+            background-color: #005bb5;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .balance-display {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 10px;
+            margin-top: 10px;
+            display: inline-block;
+            min-width: 180px;
+        }
+
+        .balance-display strong { font-size: 22px; }
+
+        /* Grille des Produits */
+        .products-container { padding: 15px; }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #e1e9f5;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .vip-tag {
+            background: #005bb5;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .product-info { display: flex; align-items: center; margin-bottom: 10px; }
+        .product-icon { font-size: 35px; margin-right: 15px; }
+        .product-name { font-weight: bold; color: #333; font-size: 17px; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 13px;
+            margin-bottom: 15px;
+            background: #f9fbff;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .stat-item span { color: #888; display: block; font-size: 11px; }
+        .stat-item b { color: #333; }
+        .stat-income { color: #27ae60 !important; }
+
+        .btn-buy {
+            background: #005bb5;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-buy:active { transform: scale(0.98); background: #004488; }
+
+        /* Fenêtre Alerte */
+        #alert-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none; justify-content: center; align-items: center;
+            z-index: 2000;
+        }
+        .alert-box { background: white; width: 85%; max-width: 320px; padding: 25px; border-radius: 20px; text-align: center; }
+        .btn-close { background: #005bb5; color: white; border: none; padding: 10px 20px; border-radius: 8px; margin-top: 15px; width: 100%; }
+
+        /* Menu Bas */
+        .bottom-nav {
+            position: fixed; bottom: 0; width: 100%; background: white;
+            display: flex; justify-content: space-around; padding: 10px 0;
+            border-top: 1px solid #eee;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+        .nav-item { text-align: center; text-decoration: none; color: #888; font-size: 11px; font-weight: bold; }
+        .nav-item.active { color: #005bb5; }
+        .nav-item i { display: block; font-size: 20px; margin-bottom: 3px; font-style: normal; }
+    </style>
+</head>
+<body>
+
+    <div id="alert-modal">
+        <div class="alert-box">
+            <h3 style="color:#c0392b">⚠️ Solde Insuffisant</h3>
+            <p style="margin-top:10px; color:#555">Votre solde est de <strong id="modal-solde">0 FC</strong>. Veuillez recharger pour acheter ce pack VIP.</p>
+            <button class="btn-close" onclick="fermerAlerte()">D'ACCORD</button>
+        </div>
+    </div>
+
+    <div class="header-top">
+        <h2>Boutique DNC</h2>
+        <div class="balance-display">
+            <span style="font-size: 11px; opacity: 0.8; text-transform: uppercase;">Mon Solde</span><br>
+            <strong id="affichage-solde">0.00 FC</strong>
+        </div>
+    </div>
+
+    <div class="products-container" id="container-vip"></div>
+
+    <nav class="bottom-nav">
+        <a href="accueil.html" class="nav-item"><i>🏠</i>MAISON</a>
+        <a href="produit.html" class="nav-item active"><i>🛍️</i>PRODUIT</a>
+        <a href="equipe.html" class="nav-item"><i>👥</i>ÉQUIPE</a>
+        <a href="compte.html" class="nav-item"><i>👤</i>LE MIEN</a>
+    </nav>
+
+    <script>
+        // Données des 16 VIP conservées telles quelles
+        const vips = [
+            { id: 1, prix: 15000, jour: 3600, total: 108000, icone: "📡" },
+            { id: 2, prix: 35000, jour: 6000, total: 180000, icone: "🛰️" },
+            { id: 3, prix: 50000, jour: 9000, total: 270000, icone: "🗼" },
+            { id: 4, prix: 75000, jour: 15000, total: 450000, icone: "📶" },
+            { id: 5, prix: 100000, jour: 21000, total: 630000, icone: "🛸" },
+            { id: 6, prix: 140000, jour: 30000, total: 900000, icone: "🌐" },
+            { id: 7, prix: 250000, jour: 53500, total: 1605000, icone: "🔌" },
+            { id: 8, prix: 530000, jour: 100000, total: 3000000, icone: "🔋" },
+            { id: 9, prix: 850000, jour: 120000, total: 3600000, icone: "💎" },
+            { id: 10, prix: 1200000, jour: 180000, total: 5400000, icone: "🚀" },
+            { id: 11, prix: 1800000, jour: 260000, total: 7800000, icone: "⚡" },
+            { id: 12, prix: 2500000, jour: 350000, total: 10500000, icone: "🔥" },
+            { id: 13, prix: 3500000, jour: 480000, total: 14400000, icone: "🌟" },
+            { id: 14, prix: 5000000, jour: 650000, total: 19500000, icone: "👑" },
+            { id: 15, prix: 7000000, jour: 900000, total: 27000000, icone: "🏆" },
+            { id: 16, prix: 10000000, jour: 1300000, total: 39000000, icone: "💰" }
+        ];
+
+        let soldeActuel = 0;
+
+        function chargerVIP() {
+            // Récupération du solde réel enregistré
+            const storedUser = JSON.parse(localStorage.getItem('dnc_user'));
+            if (storedUser) {
+                soldeActuel = storedUser.balance;
+                document.getElementById('affichage-solde').innerText = soldeActuel.toLocaleString() + " FC";
+            }
+
+            const container = document.getElementById('container-vip');
+            container.innerHTML = ""; // Vide le conteneur avant chargement
+            
+            vips.forEach(v => {
+                container.innerHTML += `
+                    <div class="product-card">
+                        <div class="vip-tag">PACK VIP ${v.id}</div>
+                        <div class="product-info">
+                            <div class="product-icon">${v.icone}</div>
+                            <div class="product-name">Système Antenne VIP ${v.id}</div>
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-item"><span>Prix</span><b>${v.prix.toLocaleString()} FC</b></div>
+                            <div class="stat-item"><span>Revenu / Jour</span><b class="stat-income">${v.jour.toLocaleString()} FC</b></div>
+                            <div class="stat-item"><span>Durée</span><b>30 Jours</b></div>
+                            <div class="stat-item"><span>Revenu Total</span><b>${v.total.toLocaleString()} FC</b></div>
+                        </div>
+                        <button class="btn-buy" onclick="acheterProduit(${v.prix})">INVESTIR MAINTENANT</button>
+                    </div>
+                `;
+            });
+        }
+
+        function acheterProduit(prix) {
+            if (soldeActuel >= prix) {
+                alert("Félicitations ! Achat VIP réussi.");
+                // Ici tu pourrais ajouter la logique pour déduire le solde
+            } else {
+                document.getElementById('modal-solde').innerText = soldeActuel.toLocaleString() + " FC";
+                document.getElementById('alert-modal').style.display = 'flex';
+            }
+        }
+
+        function fermerAlerte() { document.getElementById('alert-modal').style.display = 'none'; }
+
+        window.onload = chargerVIP;
+    </script>
+</body>
+</html>

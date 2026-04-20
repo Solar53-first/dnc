@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNC - Accueil</title>
+    <style>
+        :root {
+            --primary-blue: #005bb5;
+            --orange-accent: #ff6600;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --white: #ffffff;
+            --danger: #e11d48;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f7f6;
+            color: #333;
+            padding-bottom: 100px;
+        }
+
+        /* En-tête DNC */
+        .header-dnc {
+            background-color: var(--primary-blue);
+            padding: 50px 20px;
+            text-align: center;
+            color: white;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+        }
+
+        .header-dnc h1 {
+            font-size: 60px;
+            margin: 0;
+            letter-spacing: 5px;
+            font-weight: 900;
+        }
+
+        .header-dnc p {
+            margin-top: 5px;
+            font-size: 13px;
+            opacity: 0.9;
+            letter-spacing: 2px;
+        }
+
+        /* Carte de Solde */
+        .balance-card {
+            background: var(--white);
+            margin: -30px 20px 0 20px;
+            padding: 25px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .balance-item { text-align: center; }
+        .balance-label { font-size: 11px; color: #888; margin-bottom: 8px; text-transform: uppercase; }
+        .balance-value { font-size: 19px; font-weight: bold; color: var(--primary-blue); }
+
+        /* Grille de Boutons Principaux */
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .btn-action {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--primary-blue);
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+
+        .btn-action i { font-size: 24px; display: block; margin-bottom: 10px; font-style: normal; }
+
+        /* Section Liste Menu (Espace rempli) */
+        .menu-list {
+            background: var(--white);
+            margin: 0 20px 20px 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 18px;
+            text-decoration: none;
+            color: #333;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 15px;
+        }
+
+        .menu-item:last-child { border-bottom: none; }
+        .menu-item i { margin-right: 15px; font-style: normal; font-size: 18px; }
+        .menu-item .arrow { margin-left: auto; color: #ccc; font-weight: bold; }
+
+        /* Bouton Déconnexion */
+        .logout-container { padding: 0 20px; }
+        .btn-logout {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: white;
+            color: var(--danger);
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 15px;
+            border: 1px solid #fee2e2;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Popup Annonce */
+        #popup-annonce {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 2000;
+        }
+
+        .annonce-box {
+            background: var(--card-bg);
+            width: 85%;
+            max-width: 350px;
+            padding: 30px;
+            border-radius: 25px;
+            text-align: center;
+            color: white;
+            border: 2px solid var(--orange-accent);
+        }
+
+        .annonce-box h2 { color: var(--orange-accent); margin-bottom: 15px; }
+        .btn-social {
+            display: block; width: 100%; padding: 12px; margin-bottom: 10px;
+            border-radius: 10px; text-decoration: none; font-weight: bold; color: white;
+        }
+        .btn-tg { background: #0088cc; }
+        .btn-wa { background: #25d366; }
+        .btn-close { background: transparent; border: 1px solid #666; color: #aaa; margin-top: 10px; width: 100%; padding: 10px; border-radius: 10px; }
+
+        /* Nav Bas */
+        .bottom-nav {
+            position: fixed; bottom: 0; width: 100%; background: white;
+            display: flex; justify-content: space-around; padding: 15px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-item { text-align: center; text-decoration: none; color: #888; font-size: 11px; font-weight: bold; }
+        .nav-item.active { color: var(--primary-blue); }
+    </style>
+</head>
+<body>
+
+    <div id="popup-annonce">
+        <div class="annonce-box">
+            <span style="font-size: 40px;">📢</span>
+            <h2>OFFICIEL DNC</h2>
+            <p>Rejoignez nos canaux officiels pour suivre les cours et recevoir vos bonus quotidiens.</p>
+            <a href="https://t.me/+urw0HCz-zis5YzA0" class="btn-social btn-tg">CANAL TELEGRAM</a>
+            <a href="https://whatsapp.com/dl/" class="btn-social btn-wa">SERVICE WHATSAPP</a>
+            <button class="btn-close" onclick="fermerAnnonce()">D'ACCORD</button>
+        </div>
+    </div>
+
+    <div class="header-dnc">
+        <h1>DNC</h1>
+        <p>DIGITAL NETWORK CAPITAL</p>
+    </div>
+
+    <div class="balance-card">
+        <div class="balance-item">
+            <div class="balance-label">Solde Disponible</div>
+            <div class="balance-value" id="user-balance">0.00 FC</div>
+        </div>
+        <div class="balance-item">
+            <div class="balance-label">Profit Total</div>
+            <div class="balance-value">0.00 FC</div>
+        </div>
+    </div>
+
+    <div class="action-grid">
+        <a href="recharge.html" class="btn-action"><i>💳</i> RECHARGER</a>
+        <a href="retrait.html" class="btn-action"><i>📥</i> RETRAIT</a>
+    </div>
+
+    <div class="menu-list">
+        <a href="recharge_history.html" class="menu-item">
+            <i>🕒</i> Historique de recharge <span class="arrow">></span>
+        </a>
+        <a href="withdraw_history.html" class="menu-item">
+            <i>📝</i> Historique de retrait <span class="arrow">></span>
+        </a>
+        <a href="support.html" class="menu-item">
+            <i>🎧</i> Service Client <span class="arrow">></span>
+        </a>
+    </div>
+
+    <div class="logout-container">
+        <a href="#" class="btn-logout" onclick="deconnexion()">SE DÉCONNECTER</a>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="accueil.html" class="nav-item active">🏠 MAISON</a>
+        <a href="produit.html" class="nav-item">🛍️ PRODUIT</a>
+        <a href="equipe.html" class="nav-item">👥 ÉQUIPE</a>
+        <a href="compte.html" class="nav-item">👤 LE MIEN</a>
+    </nav>
+
+    <script>
+        function fermerAnnonce() {
+            document.getElementById('popup-annonce').style.display = 'none';
+        }
+
+        function deconnexion() {
+            if(confirm("Voulez-vous vraiment vous déconnecter ?")) {
+                localStorage.removeItem('dnc_user'); // Supprime les données de session
+                window.location.href = "inscription.html"; // Renvoie à l'inscription
+            }
+        }
+
+        window.onload = function() {
+            const storedUser = JSON.parse(localStorage.getItem('dnc_user'));
+            if (storedUser) {
+                document.getElementById('user-balance').innerText = storedUser.balance.toLocaleString() + " FC";
+            }
+        };
+    </script>
+
+</body>
+</html>
