@@ -83,7 +83,7 @@
 
         .btn-action i { font-size: 24px; display: block; margin-bottom: 10px; font-style: normal; }
 
-        /* Section Liste Menu (Espace rempli) */
+        /* Section Liste Menu */
         .menu-list {
             background: var(--white);
             margin: 0 20px 20px 20px;
@@ -120,9 +120,10 @@
             border-radius: 15px;
             border: 1px solid #fee2e2;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            text-transform: uppercase;
         }
 
-        /* Popup Annonce */
+        /* Popup Annonce - DESIGN MODIFIÉ BLEU ET BLANC */
         #popup-annonce {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85);
@@ -131,24 +132,25 @@
         }
 
         .annonce-box {
-            background: var(--card-bg);
+            background: #ffffff; /* Fond Blanc */
             width: 85%;
             max-width: 350px;
             padding: 30px;
             border-radius: 25px;
             text-align: center;
-            color: white;
-            border: 2px solid var(--orange-accent);
+            color: #333; /* Texte Sombre */
+            border: 4px solid var(--primary-blue); /* Bordure Bleue */
         }
 
-        .annonce-box h2 { color: var(--orange-accent); margin-bottom: 15px; }
+        .annonce-box h2 { color: var(--primary-blue); margin-bottom: 15px; font-weight: 900; }
         .btn-social {
-            display: block; width: 100%; padding: 12px; margin-bottom: 10px;
-            border-radius: 10px; text-decoration: none; font-weight: bold; color: white;
+            display: block; width: 100%; padding: 14px; margin-bottom: 12px;
+            border-radius: 12px; text-decoration: none; font-weight: bold; color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-        .btn-tg { background: #0088cc; }
-        .btn-wa { background: #25d366; }
-        .btn-close { background: transparent; border: 1px solid #666; color: #aaa; margin-top: 10px; width: 100%; padding: 10px; border-radius: 10px; }
+        .btn-tg { background: #0088cc; } /* Toujours Bleu */
+        .btn-wa { background: #25d366; } /* Toujours Vert */
+        .btn-close { background: #f0f0f0; border: none; color: #555; margin-top: 10px; width: 100%; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; }
 
         /* Nav Bas */
         .bottom-nav {
@@ -166,9 +168,9 @@
         <div class="annonce-box">
             <span style="font-size: 40px;">📢</span>
             <h2>OFFICIEL DNC</h2>
-            <p>Rejoignez nos canaux officiels pour suivre les cours et recevoir vos bonus quotidiens.</p>
-            <a href="https://t.me/+urw0HCz-zis5YzA0" class="btn-social btn-tg">CANAL TELEGRAM</a>
-            <a href="https://whatsapp.com/dl/" class="btn-social btn-wa">SERVICE WHATSAPP</a>
+            <p style="margin-bottom: 20px; font-size: 14px; line-height: 1.5;">Rejoignez nos groupes officiels pour suivre les cours et recevoir vos bonus quotidiens.</p>
+            <a href="https://t.me/+C0BmFe5xVlM3M2U0" class="btn-social btn-tg" target="_blank">GROUPE TELEGRAM</a>
+            <a href="https://wa.me/243897272343" class="btn-social btn-wa" target="_blank">SERVICE WHATSAPP</a>
             <button class="btn-close" onclick="fermerAnnonce()">D'ACCORD</button>
         </div>
     </div>
@@ -181,7 +183,7 @@
     <div class="balance-card">
         <div class="balance-item">
             <div class="balance-label">Solde Disponible</div>
-            <div class="balance-value" id="user-balance">0.00 FC</div>
+            <div class="balance-value" id="user-balance">0 FC</div>
         </div>
         <div class="balance-item">
             <div class="balance-label">Profit Total</div>
@@ -201,7 +203,7 @@
         <a href="withdraw_history.html" class="menu-item">
             <i>📝</i> Historique de retrait <span class="arrow">></span>
         </a>
-        <a href="support.html" class="menu-item">
+        <a href="https://wa.me/243897272343" class="menu-item" target="_blank">
             <i>🎧</i> Service Client <span class="arrow">></span>
         </a>
     </div>
@@ -224,8 +226,8 @@
 
         function deconnexion() {
             if(confirm("Voulez-vous vraiment vous déconnecter ?")) {
-                localStorage.removeItem('dnc_user'); // Supprime les données de session
-                window.location.href = "inscription.html"; // Renvoie à l'inscription
+                localStorage.removeItem('dnc_user'); 
+                window.location.href = "inscription.html"; 
             }
         }
 
