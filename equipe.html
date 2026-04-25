@@ -3,192 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DNC | Mon Équipe</title>
+    <title>DNC | Réseau Équipe</title>
     <style>
         :root {
             --primary-blue: #005bb5;
-            --bg-light: #f4f7f6;
-            --white: #ffffff;
-            --gold: #ffcc00;
+            --success-green: #2ecc71;
+            --pure-white: #ffffff;
+            --soft-gray: #f4f7f6;
+            --text-dark: #2c3e50;
         }
 
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            background-color: var(--bg-light);
-            color: #333;
+            background-color: var(--soft-gray);
+            color: var(--text-dark);
             padding-bottom: 80px;
         }
 
-        .header-team {
-            background-color: var(--primary-blue);
-            padding: 30px 20px;
+        /* En-tête stylisé */
+        .header-gradient {
+            background: linear-gradient(135deg, var(--primary-blue), #003d7a);
             color: white;
+            padding: 40px 20px 60px;
             text-align: center;
-            border-bottom-left-radius: 25px;
-            border-bottom-right-radius: 25px;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
         }
 
-        /* Section Lien d'invitation */
-        .invite-box {
-            background: var(--white);
-            margin: 20px;
+        /* Carte d'invitation flottante */
+        .card-invite {
+            background: var(--pure-white);
+            margin: -40px 20px 20px;
             padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             text-align: center;
         }
 
-        .invite-title { font-weight: bold; margin-bottom: 10px; color: var(--primary-blue); }
-        
-        .link-container {
+        .share-label {
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--primary-blue);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .copy-wrapper {
             display: flex;
-            background: #f0f4f8;
-            padding: 10px;
-            border-radius: 10px;
-            align-items: center;
-            margin-top: 10px;
+            background: #eef2f3;
+            padding: 6px;
+            border-radius: 12px;
+            border: 2px solid var(--primary-blue);
         }
 
         #invite-link {
             flex: 1;
-            font-size: 12px;
-            color: #555;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
             border: none;
             background: transparent;
+            padding: 10px;
+            font-size: 12px;
+            outline: none;
+            color: #555;
         }
 
-        .btn-copy {
+        .btn-action {
             background: var(--primary-blue);
             color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 8px;
-            font-size: 12px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: bold;
             cursor: pointer;
+            transition: 0.3s;
         }
 
-        /* Statistiques d'équipe */
-        .team-stats {
+        /* Grille de stats façon "Tableau de bord" */
+        .grid-stats {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
             padding: 0 20px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
-        .stat-card {
-            background: white;
-            padding: 15px;
-            border-radius: 12px;
+        .stat-box {
+            background: var(--pure-white);
+            padding: 15px 5px;
+            border-radius: 15px;
             text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-bottom: 4px solid var(--success-green);
         }
 
-        .stat-val { font-size: 18px; font-weight: bold; color: var(--primary-blue); }
-        .stat-lbl { font-size: 11px; color: #888; text-transform: uppercase; }
+        .val-num { font-size: 20px; font-weight: 800; color: var(--primary-blue); }
+        .val-label { font-size: 10px; color: #7f8c8d; text-transform: uppercase; margin-top: 4px; font-weight: bold; }
 
-        /* Niveaux de commission */
-        .levels-container { padding: 0 20px; }
-        .level-row {
-            background: white;
+        /* Liste des membres sans vide inutile */
+        .list-section {
+            padding: 0 20px;
+        }
+
+        .member-item {
+            background: var(--pure-white);
             display: flex;
             justify-content: space-between;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 12px;
             align-items: center;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border-left: 5px solid var(--success-green);
         }
 
-        .level-info b { color: var(--primary-blue); }
-        .commission-tag {
-            background: #e0f2fe;
-            color: #0369a1;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
+        .member-details b { font-size: 14px; color: var(--text-dark); }
+        .member-details span { font-size: 11px; color: #95a5a6; display: block; margin-top: 2px; }
+
+        .tag-lvl {
+            font-size: 10px;
+            padding: 5px 12px;
+            border-radius: 30px;
             font-weight: bold;
+            color: white;
         }
+        .bg-l1 { background-color: var(--success-green); }
+        .bg-l2 { background-color: #f1c40f; }
+        .bg-l3 { background-color: #e67e22; }
 
-        /* Nav Bas */
-        .bottom-nav {
+        /* Navigation */
+        .nav-bottom {
             position: fixed; bottom: 0; width: 100%; background: white;
             display: flex; justify-content: space-around; padding: 15px 0;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
         }
-        .nav-item { text-align: center; text-decoration: none; color: #888; font-size: 11px; }
-        .nav-item.active { color: var(--primary-blue); font-weight: bold; }
+        .nav-btn { text-decoration: none; color: #bdc3c7; font-size: 11px; text-align: center; font-weight: bold; }
+        .nav-btn.active { color: var(--primary-blue); }
     </style>
 </head>
 <body>
 
-    <div class="header-team">
-        <h2>Mon Réseau</h2>
-        <p>Gagnez des commissions sur 3 niveaux</p>
+    <div class="header-gradient">
+        <h2 style="margin:0">Mon Réseau</h2>
+        <p style="margin:8px 0 0; font-size:13px; opacity:0.9">Commissions : 25% (L1) • 3% (L2) • 1% (L3)</p>
     </div>
 
-    <div class="invite-box">
-        <div class="invite-title">Lien d'invitation personnel</div>
-        <div class="link-container">
-            <input type="text" id="invite-link" readonly value="Génération du lien...">
-            <button class="btn-copy" onclick="copierLien()">COPIER</button>
-        </div>
-    </div>
-
-    <div class="team-stats">
-        <div class="stat-card">
-            <div class="stat-val" id="total-members">0</div>
-            <div class="stat-lbl">Membres</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-val" id="team-bonus">0 FC</div>
-            <div class="stat-lbl">Bonus Total</div>
+    <div class="card-invite">
+        <span class="share-label">📲 Partagez votre lien</span>
+        <div class="copy-wrapper">
+            <input type="text" id="invite-link" readonly value="Chargement du lien...">
+            <button class="btn-action" onclick="copierLien()">COPIER</button>
         </div>
     </div>
 
-    <div class="levels-container">
-        <div class="level-row">
-            <div class="level-info">Niveau 1 (Direct)</div>
-            <div class="commission-tag">25%</div>
+    <div class="grid-stats">
+        <div class="stat-box">
+            <div class="val-num" id="n1">0</div>
+            <div class="val-label">Niveau 1</div>
         </div>
-        <div class="level-row">
-            <div class="level-info">Niveau 2</div>
-            <div class="commission-tag">3%</div>
+        <div class="stat-box">
+            <div class="val-num" id="n2">0</div>
+            <div class="val-label">Niveau 2</div>
         </div>
-        <div class="level-row">
-            <div class="level-info">Niveau 3</div>
-            <div class="commission-tag">1%</div>
+        <div class="stat-box">
+            <div class="val-num" id="n3">0</div>
+            <div class="val-label">Niveau 3</div>
         </div>
     </div>
 
-    <nav class="bottom-nav">
-        <a href="accueil.html" class="nav-item">🏠 MAISON</a>
-        <a href="produit.html" class="nav-item">🛍️ PRODUIT</a>
-        <a href="equipe.html" class="nav-item active">👥 ÉQUIPE</a>
-        <a href="compte.html" class="nav-item">👤 LE MIEN</a>
+    <div class="list-section" id="list-members">
+        </div>
+
+    <nav class="nav-bottom">
+        <a href="accueil.html" class="nav-btn">🏠<br>ACCUEIL</a>
+        <a href="produit.html" class="nav-btn">🛍️<br>PRODUIT</a>
+        <a href="equipe.html" class="nav-btn active">👥<br>ÉQUIPE</a>
+        <a href="profile.html" class="nav-btn">👤<br>PROFIL</a>
     </nav>
 
     <script>
         window.onload = function() {
-            const user = JSON.parse(localStorage.getItem('dnc_user')) || { phone: "000000000" };
+            const user = JSON.parse(localStorage.getItem('dnc_user')) || { phone: "000" };
             
-            // Génération du lien d'invitation (remplace 'tonsite.com' par ton URL finale)
-            const baseUrl = window.location.origin + "/register.html";
-            const inviteUrl = `${baseUrl}?ref=${user.phone}`;
-            document.getElementById('invite-link').value = inviteUrl;
+            // 1. Lien de parrainage
+            const link = window.location.origin + "/inscription.html?ref=" + user.phone;
+            document.getElementById('invite-link').value = link;
+
+            // 2. Calcul du réseau
+            const all = JSON.parse(localStorage.getItem('dnc_all_users')) || [];
+            
+            const l1 = all.filter(u => u.referredBy === user.phone);
+            const l2 = all.filter(u => l1.some(p => p.phone === u.referredBy));
+            const l3 = all.filter(u => l2.some(p => p.phone === u.referredBy));
+
+            document.getElementById('n1').innerText = l1.length;
+            document.getElementById('n2').innerText = l2.length;
+            document.getElementById('n3').innerText = l3.length;
+
+            const box = document.getElementById('list-members');
+            box.innerHTML = ""; 
+
+            const add = (arr, level, css) => {
+                arr.forEach(m => {
+                    box.innerHTML += `
+                        <div class="member-item">
+                            <div class="member-details">
+                                <b>+${m.phone}</b>
+                                <span>Inscrit le ${m.date || '---'}</span>
+                            </div>
+                            <span class="tag-lvl ${css}">Lvl ${level}</span>
+                        </div>
+                    `;
+                });
+            };
+
+            if ((l1.length + l2.length + l3.length) === 0) {
+                box.innerHTML = '<p style="text-align:center; color:#bdc3c7; margin-top:30px;">Aucun membre dans votre équipe pour le moment.</p>';
+            } else {
+                add(l1, 1, 'bg-l1');
+                add(l2, 2, 'bg-l2');
+                add(l3, 3, 'bg-l3');
+            }
         };
 
         function copierLien() {
-            const copyText = document.getElementById("invite-link");
-            copyText.select();
-            copyText.setSelectionRange(0, 99999);
+            const input = document.getElementById("invite-link");
+            input.select();
             document.execCommand("copy");
-            alert("Lien copié ! Partagez-le pour recruter.");
+            alert("Lien de parrainage copié !");
         }
     </script>
-
 </body>
 </html>
