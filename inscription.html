@@ -25,7 +25,7 @@
             text-align: center;
             font-size: 55px;
             font-weight: bold;
-            color: #005bb5; /* Bleu du modèle */
+            color: #005bb5;
             margin: 0;
             letter-spacing: 1px;
         }
@@ -53,11 +53,6 @@
             outline: none;
         }
 
-        .standard-input::placeholder {
-            color: #b0b0b0;
-        }
-
-        /* Groupe spécifique pour le numéro de téléphone */
         .phone-group {
             display: flex;
             border: 2px solid #005bb5;
@@ -84,25 +79,17 @@
             outline: none;
         }
 
-        .phone-input::placeholder {
-            color: #b0b0b0;
-        }
-
         .btn-submit {
             width: 100%;
             background-color: #005bb5;
             color: white;
             border: none;
             padding: 16px;
-            border-radius: 30px; /* Bordures très arrondies comme sur l'image */
+            border-radius: 30px;
             font-size: 18px;
             font-weight: bold;
             margin-top: 20px;
             cursor: pointer;
-        }
-
-        .btn-submit:active {
-            background-color: #004488;
         }
 
         .footer {
@@ -116,6 +103,15 @@
             color: #005bb5;
             font-weight: bold;
             text-decoration: none;
+        }
+
+        /* Style pour le label du parrain */
+        .ref-label {
+            font-size: 11px;
+            color: #005bb5;
+            margin-bottom: 5px;
+            display: block;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -143,7 +139,8 @@
         </div>
 
         <div class="input-group">
-            <input type="text" id="referral_code" class="standard-input" value="874123" readonly>
+            <label class="ref-label">ID Parrain :</label>
+            <input type="text" id="referral_code" class="standard-input" value="Direct" readonly style="background: #f9f9f9;">
         </div>
 
         <button class="btn-submit" onclick="registerUser()">S'inscrire</button>
@@ -154,44 +151,68 @@
     </div>
 
     <script>
+        // LOGIQUE DE DÉTECTION DU PARRAIN
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get('ref');
+            
+            if (refCode) {
+                // Si un parrain est dans l'URL, on l'affiche dans le champ
+                document.getElementById('referral_code').value = refCode;
+            }
+        };
+
         function registerUser() {
             const user = document.getElementById('username').value;
-            const phone = document.getElementById('phone').value;
+            const phoneField = document.getElementById('phone').value;
             const pin = document.getElementById('pin').value;
             const pinConfirm = document.getElementById('pin_confirm').value;
             const refCode = document.getElementById('referral_code').value;
 
-            // Vérifications de sécurité
-            if(!user || !phone || !pin) {
-                alert("Veuillez remplir tous les champs obligatoires.");
+            if(!user || !phoneField || !pin) {
+                alert("Veuillez remplir tous les champs.");
                 return;
             }
 
-            // Le mot de passe doit comporter exactement 6 chiffres
-            const isSixDigits = /^\d{6}$/.test(pin);
-            if(!isSixDigits) {
-                alert("Erreur : Le mot de passe doit contenir exactement 6 chiffres.");
+            if(!/^\d{6}$/.test(pin)) {
+                alert("Le mot de passe doit contenir 6 chiffres.");
                 return;
             }
 
             if(pin !== pinConfirm) {
-                alert("Erreur : Les mots de passe ne correspondent pas.");
+                alert("Les mots de passe ne correspondent pas.");
                 return;
             }
 
-            // Enregistrement de l'utilisateur dans la mémoire du navigateur
+            const fullPhone = "+243" + phoneField;
+
+            // Création de l'utilisateur
             const userData = {
                 username: user,
-                phone: "+243" + phone,
+                phone: fullPhone,
                 pin: pin,
-                referredBy: refCode,
-                balance: 0
+                referredBy: refCode, // Enregistre le numéro du parrain
+                balance: 0,
+                date: new Date().toLocaleDateString()
             };
 
+            // 1. Sauvegarde pour la session actuelle
             localStorage.setItem('dnc_user', JSON.stringify(userData));
 
-            alert("Inscription réussie ! Vous pouvez maintenant vous connecter.");
-            window.location.href = "index.html"; // Redirection vers la page de connexion
+            // 2. Ajout à la liste globale des membres (pour que le parrain puisse le voir)
+            let allUsers = JSON.parse(localStorage.getItem('dnc_all_users')) || [];
+            
+            // Vérifier si le numéro existe déjà
+            if(allUsers.find(u => u.phone === fullPhone)) {
+                alert("Ce numéro est déjà utilisé.");
+                return;
+            }
+
+            allUsers.push(userData);
+            localStorage.setItem('dnc_all_users', JSON.stringify(allUsers));
+
+            alert("Inscription réussie !");
+            window.location.href = "index.html"; 
         }
     </script>
 
