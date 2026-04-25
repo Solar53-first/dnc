@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNC | Recharge</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #ffffff; padding-bottom: 40px; color: #333; }
+
+        .header {
+            background: #0056b3; color: white; padding: 15px;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; font-weight: bold; font-size: 18px;
+        }
+        .back-btn {
+            position: absolute; left: 15px; font-size: 24px;
+            color: white; text-decoration: none; font-weight: bold;
+        }
+
+        .container { padding: 15px; }
+        .section-title { font-size: 14px; font-weight: 800; margin: 20px 0 10px; color: #0056b3; text-transform: uppercase; }
+
+        .vip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .vip-item {
+            background: #f8f9fa; border: 2px solid #dee2e6; padding: 12px 5px;
+            text-align: center; border-radius: 10px; cursor: pointer;
+            font-weight: bold; font-size: 13px; transition: 0.2s; color: #333;
+        }
+        .vip-item.active { border-color: #0056b3; background-color: #e7f1ff; color: #0056b3; box-shadow: 0 0 8px rgba(0,86,179,0.2); }
+
+        .network-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .network-item {
+            background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 10px;
+            padding: 10px; text-align: center; cursor: pointer; font-weight: bold; font-size: 11px;
+        }
+        .network-item.active { border-color: #0056b3; background-color: #e7f1ff; color: #0056b3; }
+
+        #payment-area {
+            background: #ffffff; border-radius: 15px; padding: 18px;
+            margin-top: 20px; display: none; border: 2px solid #0056b3;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .instruction-text { font-size: 13px; text-align: center; color: #555; line-height: 1.5; }
+        .instruction-text b { color: #0056b3; font-size: 15px; }
+        .dest-phone { font-size: 20px; font-weight: 900; color: #0056b3; margin: 10px 0; display: block; text-align: center;}
+        .copy-btn { 
+            background: #0056b3; color: #ffffff; padding: 10px; border-radius: 5px; 
+            font-size: 12px; font-weight: bold; cursor: pointer; display: block; text-align: center; width: 170px; margin: 0 auto 15px;
+            border: none;
+        }
+
+        .input-group { margin-top: 15px; }
+        .input-group label { display: block; font-size: 12px; margin-bottom: 5px; color: #666; font-weight: bold; }
+        .input-group input {
+            width: 100%; padding: 14px; border-radius: 10px;
+            border: 1px solid #ced4da; background: #ffffff; color: #333; outline: none; font-size: 14px;
+        }
+        .input-group input:focus { border-color: #0056b3; box-shadow: 0 0 0 3px rgba(0,86,179,0.1); }
+
+        .btn-submit {
+            background: #adb5bd; color: #ffffff; border: none; width: 100%;
+            padding: 16px; border-radius: 12px; font-weight: bold;
+            margin-top: 25px; cursor: not-allowed; font-size: 16px; transition: 0.3s;
+        }
+        .btn-submit.active { background: #0056b3; cursor: pointer; box-shadow: 0 4px 10px rgba(0,86,179,0.3); }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="accueil.html" class="back-btn">←</a>
+        RECHARGER MON COMPTE
+    </div>
+
+    <div class="container">
+        
+        <p class="section-title">1. Choisir le montant</p>
+        <div class="vip-grid">
+            <div class="vip-item" onclick="selectVIP(this, 15000)">VIP 1 : 15 000</div>
+            <div class="vip-item" onclick="selectVIP(this, 35000)">VIP 2 : 35 000</div>
+            <div class="vip-item" onclick="selectVIP(this, 50000)">VIP 3 : 50 000</div>
+            <div class="vip-item" onclick="selectVIP(this, 75000)">VIP 4 : 75 000</div>
+            <div class="vip-item" onclick="selectVIP(this, 100000)">VIP 5 : 100 000</div>
+            <div class="vip-item" onclick="selectVIP(this, 150000)">VIP 6 : 150 000</div>
+            <div class="vip-item" onclick="selectVIP(this, 250000)">VIP 7 : 250 000</div>
+            <div class="vip-item" onclick="selectVIP(this, 400000)">VIP 8 : 400 000</div>
+            <div class="vip-item" onclick="selectVIP(this, 600000)">VIP 9 : 600 000</div>
+            <div class="vip-item" onclick="selectVIP(this, 850000)">VIP 10 : 850 000</div>
+            <div class="vip-item" onclick="selectVIP(this, 1000000)">VIP 11 : 1 000 000</div>
+            <div class="vip-item" onclick="selectVIP(this, 2000000)">VIP 12 : 2 000 000</div>
+            <div class="vip-item" onclick="selectVIP(this, 3500000)">VIP 13 : 3 500 000</div>
+            <div class="vip-item" onclick="selectVIP(this, 5000000)">VIP 14 : 5 000 000</div>
+            <div class="vip-item" onclick="selectVIP(this, 10000000)">VIP 15 : 10 000 000</div>
+        </div>
+
+        <p class="section-title">2. Sélectionner le réseau</p>
+        <div class="network-grid">
+            <div class="network-item" onclick="selectNet(this, 'M-Pesa', 'Disponible bientôt')">M-PESA</div>
+            <div class="network-item" onclick="selectNet(this, 'Airtel', '0984874123')">AIRTEL</div>
+            <div class="network-item" onclick="selectNet(this, 'Orange', '0897272343')">ORANGE</div>
+        </div>
+
+        <div id="payment-area">
+            <p class="instruction-text">Faites l'envoi d'argent de <b id="show-amount">0</b> FC via <b id="show-net"></b> sur ce numéro :</p>
+            <span class="dest-phone" id="phone-number">+243 000 000 000</span>
+            <div class="copy-btn" id="btn-copier" onclick="copyText()">COPIER LE NUMÉRO</div>
+            
+            <div class="input-group">
+                <label>Collez l'identification de transaction (Référence SMS)</label>
+                <input type="text" id="tx-id" placeholder="Ex: PP23456789" oninput="checkInputs()">
+            </div>
+            <div class="input-group">
+                <label>Votre numéro de téléphone (Expéditeur)</label>
+                <input type="number" id="user-phone" placeholder="Ex: 0812345678" oninput="checkInputs()">
+            </div>
+            
+            <button id="final-btn" class="btn-submit" onclick="sendRecharge()" disabled>SOUMETTRE LA RECHARGE</button>
+        </div>
+
+    </div>
+
+    <script>
+        let chosenAmount = 0;
+        let chosenNet = "";
+
+        function selectVIP(el, amount) {
+            document.querySelectorAll('.vip-item').forEach(v => v.classList.remove('active'));
+            el.classList.add('active');
+            chosenAmount = amount;
+            document.getElementById('show-amount').innerText = amount.toLocaleString('fr-FR');
+            showZone();
+        }
+
+        function selectNet(el, name, phone) {
+            document.querySelectorAll('.network-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            chosenNet = name;
+            document.getElementById('show-net').innerText = name;
+            document.getElementById('phone-number').innerText = phone;
+            
+            // Cacher le bouton copier si M-Pesa est choisi
+            if(phone === "Disponible bientôt") {
+                document.getElementById('btn-copier').style.display = "none";
+            } else {
+                document.getElementById('btn-copier').style.display = "block";
+            }
+            
+            showZone();
+        }
+
+        function showZone() {
+            if(chosenAmount > 0 && chosenNet !== "") {
+                document.getElementById('payment-area').style.display = 'block';
+            }
+        }
+
+        function copyText() {
+            const n = document.getElementById('phone-number').innerText;
+            if(n !== "Disponible bientôt") {
+                navigator.clipboard.writeText(n);
+                alert("Numéro copié !");
+            }
+        }
+
+        function checkInputs() {
+            const id = document.getElementById('tx-id').value;
+            const ph = document.getElementById('user-phone').value;
+            const btn = document.getElementById('final-btn');
+            const phoneVal = document.getElementById('phone-number').innerText;
+
+            // Bloquer le bouton si c'est M-Pesa (indisponible)
+            if(id.length > 5 && ph.length >= 9 && phoneVal !== "Disponible bientôt") {
+                btn.classList.add('active');
+                btn.disabled = false;
+            } else {
+                btn.classList.remove('active');
+                btn.disabled = true;
+            }
+        }
+
+        function sendRecharge() {
+            const currentUser = JSON.parse(localStorage.getItem('dnc_user'));
+            
+            if (!currentUser) {
+                alert("Erreur : Vous n'êtes pas connecté.");
+                return;
+            }
+
+            const rechargeData = {
+                userPhone: currentUser.phone,
+                senderPhone: document.getElementById('user-phone').value,
+                txId: document.getElementById('tx-id').value,
+                amount: chosenAmount,
+                method: chosenNet,
+                date: new Date().toLocaleString()
+            };
+
+            let attentes = JSON.parse(localStorage.getItem('dnc_pending_recharges')) || [];
+            attentes.push(rechargeData);
+            localStorage.setItem('dnc_pending_recharges', JSON.stringify(attentes));
+
+            // Redirection directe vers la page finale
+            window.location.href = "recharge_final.html";
+        }
+    </script>
+
+</body>
+</html>

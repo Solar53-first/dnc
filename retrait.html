@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNC | Retrait</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #ffffff; padding-bottom: 40px; color: #333; }
+
+        /* Header avec flèche de retour */
+        .header {
+            background: #0056b3; color: white; padding: 15px;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; font-weight: bold; font-size: 18px;
+        }
+        .back-btn {
+            position: absolute; left: 15px; font-size: 24px;
+            color: white; text-decoration: none; font-weight: bold;
+        }
+
+        .container { padding: 15px; }
+
+        /* Carte Solde */
+        .balance-card {
+            background: linear-gradient(135deg, #0056b3, #007bff);
+            color: white; padding: 25px; border-radius: 15px;
+            text-align: center; margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,86,179,0.2);
+        }
+        .balance-card p { font-size: 14px; opacity: 0.9; margin-bottom: 5px; }
+        .balance-card h2 { font-size: 28px; font-weight: 800; }
+
+        .section-title { font-size: 14px; font-weight: 800; margin: 20px 0 10px; color: #0056b3; text-transform: uppercase; }
+
+        /* Formulaire de retrait */
+        .withdraw-form {
+            background: #ffffff; border-radius: 15px; padding: 18px;
+            border: 1px solid #dee2e6; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 12px; margin-bottom: 5px; color: #666; font-weight: bold; }
+        .input-group input, .input-group select {
+            width: 100%; padding: 14px; border-radius: 10px;
+            border: 1px solid #ced4da; outline: none; font-size: 14px; background: #f8f9fa;
+        }
+        .input-group input:focus { border-color: #0056b3; background: #ffffff; }
+
+        /* Note d'information */
+        .info-note {
+            background: #fff3cd; border-left: 4px solid #ffc107;
+            padding: 12px; margin-top: 15px; border-radius: 4px;
+            font-size: 12px; color: #856404; line-height: 1.4;
+        }
+
+        /* Bouton Retrait */
+        .btn-withdraw {
+            background: #adb5bd; color: white; border: none; width: 100%;
+            padding: 16px; border-radius: 12px; font-weight: bold;
+            margin-top: 20px; cursor: not-allowed; font-size: 16px; transition: 0.3s;
+        }
+        .btn-withdraw.active { background: #28a745; cursor: pointer; box-shadow: 0 4px 10px rgba(40,167,69,0.3); }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="accueil.html" class="back-btn">←</a>
+        RETIRER MES GAINS
+    </div>
+
+    <div class="container">
+        
+        <div class="balance-card">
+            <p>Solde Retirable</p>
+            <h2 id="current-balance">0 FC</h2>
+        </div>
+
+        <p class="section-title">Informations de Retrait</p>
+        
+        <div class="withdraw-form">
+            <div class="input-group">
+                <label>Montant à retirer (Minimum 5 000 FC)</label>
+                <input type="number" id="amount" placeholder="Entrez le montant" oninput="checkForm()">
+            </div>
+
+            <div class="input-group">
+                <label>Choisir le réseau de réception</label>
+                <select id="network" onchange="checkForm()">
+                    <option value="">Sélectionner un réseau</option>
+                    <option value="M-Pesa">M-PESA</option>
+                    <option value="Airtel">AIRTEL MONEY</option>
+                    <option value="Orange">ORANGE MONEY</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Numéro de téléphone de réception</label>
+                <input type="number" id="phone" placeholder="Ex: 0812345678" oninput="checkForm()">
+            </div>
+
+            <div class="info-note">
+                <strong>Note :</strong> Les retraits sont traités dans un délai de 1h à 24h. Des frais de retrait de 14% s'appliquent lors du transfert.
+            </div>
+
+            <button id="withdraw-btn" class="btn-withdraw" onclick="processWithdraw()" disabled>CONFIRMER LE RETRAIT</button>
+        </div>
+
+    </div>
+
+    <script>
+        function checkForm() {
+            const amount = document.getElementById('amount').value;
+            const network = document.getElementById('network').value;
+            const phone = document.getElementById('phone').value;
+            const btn = document.getElementById('withdraw-btn');
+
+            // Vérifie si le montant est >= 5000 et si les champs sont remplis
+            if(amount >= 5000 && network !== "" && phone.length >= 9) {
+                btn.classList.add('active');
+                btn.disabled = false;
+            } else {
+                btn.classList.remove('active');
+                btn.disabled = true;
+            }
+        }
+
+        function processWithdraw() {
+            const amount = document.getElementById('amount').value;
+            alert("Demande de retrait de " + amount + " FC soumise ! Votre compte sera crédité après vérification.");
+            window.location.href = "compte.html";
+        }
+    </script>
+
+</body>
+</html>
