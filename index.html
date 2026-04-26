@@ -30,15 +30,6 @@
             letter-spacing: 2px;
         }
 
-        .subtitle {
-            text-align: center;
-            color: #888888;
-            font-size: 15px;
-            margin-top: 10px;
-            margin-bottom: 40px;
-            display: none; /* Masqué pour coller à ton deuxième exemple */
-        }
-
         .input-group {
             margin-bottom: 18px;
             display: flex;
@@ -108,7 +99,6 @@
             text-decoration: none;
         }
 
-        /* Icônes simplifiées en emoji pour correspondre au visuel sans images externes */
         .icon-phone::before { content: "📞"; }
         .icon-lock::before { content: "🔒"; }
     </style>
@@ -140,28 +130,53 @@
         </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
     <script>
+        // Ta configuration Firebase
+        const firebaseConfig = {
+            apiKey: "TA_CLE_API_ICI",
+            authDomain: "dnc-network-7225b.firebaseapp.com",
+            databaseURL: "https://dnc-network-7225b-default-rtdb.firebaseio.com/",
+            projectId: "dnc-network-7225b",
+            storageBucket: "dnc-network-7225b.appspot.com"
+        };
+
+        // Initialisation de Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
         function loginUser() {
             const phoneSuffix = document.getElementById('login-phone').value;
             const pin = document.getElementById('login-pin').value;
-            const fullPhone = "+243" + phoneSuffix;
-
-            // Récupération des données dans le stockage local
-            const storedUser = JSON.parse(localStorage.getItem('dnc_user'));
-
-            if (!storedUser) {
-                alert("Aucun compte trouvé. Veuillez d'abord vous inscrire.");
-                window.location.href = 'inscription.html';
+            
+            if (!phoneSuffix || !pin) {
+                alert("Veuillez remplir tous les champs.");
                 return;
             }
 
-            // Vérification stricte des identifiants
-            if (storedUser.phone === fullPhone && storedUser.pin === pin) {
-                // Succès : Redirection vers l'accueil
-                window.location.href = 'accueil.html';
-            } else {
-                alert("Numéro ou mot de passe incorrect.");
-            }
+            // Recherche de l'utilisateur dans la base de données
+            database.ref('users/' + phoneSuffix).once('value').then((snapshot) => {
+                const userData = snapshot.val();
+
+                if (userData) {
+                    // Vérification du mot de passe
+                    if (userData.pin === pin) {
+                        // Stockage temporaire pour la session actuelle
+                        localStorage.setItem('dnc_user', JSON.stringify(userData));
+                        window.location.href = 'accueil.html';
+                    } else {
+                        alert("Mot de passe incorrect.");
+                    }
+                } else {
+                    alert("Aucun compte trouvé. Veuillez d'abord vous inscrire.");
+                    window.location.href = 'inscription.html';
+                }
+            }).catch((error) => {
+                console.error(error);
+                alert("Erreur de connexion à la base de données.");
+            });
         }
     </script>
 
