@@ -25,7 +25,7 @@
             text-align: center;
             font-size: 55px;
             font-weight: bold;
-            color: #005bb5;
+            color: #000000;
             margin: 0;
             letter-spacing: 1px;
         }
@@ -45,7 +45,7 @@
         .standard-input {
             width: 100%;
             padding: 15px;
-            border: 2px solid #005bb5;
+            border: 2px solid #008000;
             border-radius: 8px;
             font-size: 15px;
             color: #333;
@@ -55,7 +55,7 @@
 
         .phone-group {
             display: flex;
-            border: 2px solid #005bb5;
+            border: 2px solid #008000;
             border-radius: 8px;
             overflow: hidden;
         }
@@ -65,7 +65,7 @@
             padding: 15px;
             font-weight: bold;
             color: #333;
-            border-right: 1px solid #005bb5;
+            border-right: 1px solid #008000;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -81,7 +81,7 @@
 
         .btn-submit {
             width: 100%;
-            background-color: #005bb5;
+            background-color: #008000;
             color: white;
             border: none;
             padding: 16px;
@@ -100,7 +100,7 @@
         }
 
         .footer a {
-            color: #005bb5;
+            color: #008000;
             font-weight: bold;
             text-decoration: none;
         }
@@ -108,7 +108,7 @@
         /* Style pour le label du parrain */
         .ref-label {
             font-size: 11px;
-            color: #005bb5;
+            color: #000000;
             margin-bottom: 5px;
             display: block;
             font-weight: bold;
@@ -150,7 +150,23 @@
         </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
     <script>
+        // Configuration de ta console Firebase
+        const firebaseConfig = {
+            apiKey: "TA_CLE_API_ICI",
+            authDomain: "dnc-network-7225b.firebaseapp.com",
+            databaseURL: "https://dnc-network-7225b-default-rtdb.firebaseio.com/",
+            projectId: "dnc-network-7225b",
+            storageBucket: "dnc-network-7225b.appspot.com"
+        };
+
+        // Initialisation de Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
         // LOGIQUE DE DÉTECTION DU PARRAIN
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -196,23 +212,26 @@
                 date: new Date().toLocaleDateString()
             };
 
-            // 1. Sauvegarde pour la session actuelle
-            localStorage.setItem('dnc_user', JSON.stringify(userData));
-
-            // 2. Ajout à la liste globale des membres (pour que le parrain puisse le voir)
-            let allUsers = JSON.parse(localStorage.getItem('dnc_all_users')) || [];
-            
-            // Vérifier si le numéro existe déjà
-            if(allUsers.find(u => u.phone === fullPhone)) {
-                alert("Ce numéro est déjà utilisé.");
-                return;
-            }
-
-            allUsers.push(userData);
-            localStorage.setItem('dnc_all_users', JSON.stringify(allUsers));
-
-            alert("Inscription réussie !");
-            window.location.href = "index.html"; 
+            // Vérifier si le numéro existe déjà dans Firebase
+            database.ref('users/' + phoneField).once('value').then((snapshot) => {
+                if (snapshot.exists()) {
+                    alert("Ce numéro est déjà utilisé.");
+                } else {
+                    // Ajout du nouvel utilisateur à la base de données Firebase
+                    database.ref('users/' + phoneField).set(userData).then(() => {
+                        // Sauvegarde locale pour maintenir la session immédiatement
+                        localStorage.setItem('dnc_user', JSON.stringify(userData));
+                        alert("Inscription réussie !");
+                        window.location.href = "index.html"; 
+                    }).catch((error) => {
+                        console.error(error);
+                        alert("Erreur lors de l'enregistrement dans la base de données.");
+                    });
+                }
+            }).catch((error) => {
+                console.error(error);
+                alert("Impossible de vérifier les informations.");
+            });
         }
     </script>
 
