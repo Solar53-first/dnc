@@ -25,7 +25,7 @@
             text-align: center;
             font-size: 60px;
             font-weight: bold;
-            color: #005bb5;
+            color: #000000; /* Changé en noir */
             margin: 0;
             letter-spacing: 2px;
         }
@@ -33,7 +33,7 @@
         .input-group {
             margin-bottom: 18px;
             display: flex;
-            border: 2px solid #005bb5;
+            border: 2px solid #008000; /* Changé en vert */
             border-radius: 10px;
             overflow: hidden;
             align-items: center;
@@ -49,7 +49,7 @@
         }
 
         .prefix-text {
-            color: #005bb5;
+            color: #008000; /* Changé en vert */
             font-weight: bold;
             font-size: 16px;
         }
@@ -63,13 +63,9 @@
             color: #333;
         }
 
-        input::placeholder {
-            color: #b0b0b0;
-        }
-
         .btn-connect {
             width: 100%;
-            background-color: #005bb5;
+            background-color: #008000; /* Changé en vert */
             color: white;
             border: none;
             padding: 16px;
@@ -78,12 +74,6 @@
             font-weight: bold;
             margin-top: 30px;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0, 91, 181, 0.2);
-        }
-
-        .btn-connect:active {
-            background-color: #004488;
-            transform: scale(0.98);
         }
 
         .footer-link {
@@ -94,7 +84,7 @@
         }
 
         .footer-link a {
-            color: #005bb5;
+            color: #008000;
             font-weight: bold;
             text-decoration: none;
         }
@@ -134,16 +124,15 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <script>
-        // Ta configuration Firebase
+        // Configuration Firebase (Assure-toi de mettre TA Clé API Web ici)
         const firebaseConfig = {
-            apiKey: "TA_CLE_API_ICI",
+            apiKey: "TA_CLE_API_WEB_ICI", 
             authDomain: "dnc-network-7225b.firebaseapp.com",
             databaseURL: "https://dnc-network-7225b-default-rtdb.firebaseio.com/",
             projectId: "dnc-network-7225b",
             storageBucket: "dnc-network-7225b.appspot.com"
         };
 
-        // Initialisation de Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
@@ -156,29 +145,28 @@
                 return;
             }
 
-            // Recherche de l'utilisateur dans la base de données
+            // On cherche dans le dossier 'users' avec le numéro comme clé
             database.ref('users/' + phoneSuffix).once('value').then((snapshot) => {
                 const userData = snapshot.val();
 
                 if (userData) {
-                    // Vérification du mot de passe
+                    // Vérification du PIN
                     if (userData.pin === pin) {
-                        // Stockage temporaire pour la session actuelle
+                        // On enregistre les données en local pour la session
                         localStorage.setItem('dnc_user', JSON.stringify(userData));
-                        window.location.href = 'accueil.html';
+                        alert("Connexion réussie !");
+                        window.location.href = 'accueil.html'; // Vérifie que ce fichier existe
                     } else {
                         alert("Mot de passe incorrect.");
                     }
                 } else {
-                    alert("Aucun compte trouvé. Veuillez d'abord vous inscrire.");
-                    window.location.href = 'inscription.html';
+                    alert("Aucun compte trouvé avec ce numéro.");
                 }
             }).catch((error) => {
                 console.error(error);
-                alert("Erreur de connexion à la base de données.");
+                alert("Erreur réseau ou base de données.");
             });
         }
     </script>
-
 </body>
 </html>
